@@ -389,10 +389,31 @@ export async function deleteTask(taskId) {
 
 // --- reports ----------------------------------------------------------------
 
+// Largest report window we allow — guards against absurd ranges (e.g. year 0001
+// to 9999) that would scan the whole shifts table and hurt performance.
+const MAX_REPORT_DAYS = 366
+
+// Validate a from/to pair (YYYY-MM-DD, inclusive). Throws a friendly Error on a
+// malformed date, a reversed range, or a range wider than MAX_REPORT_DAYS.
+export function validateDateRange(from, to) {
+  const f = new Date(from)
+  const t = new Date(to)
+  if (!from || !to || Number.isNaN(f.getTime()) || Number.isNaN(t.getTime())) {
+    throw new Error('Please choose valid from and to dates.')
+  }
+  if (t < f) throw new Error('The “to” date can’t be before the “from” date.')
+  const days = Math.round((t - f) / 86400000) + 1
+  if (days > MAX_REPORT_DAYS) {
+    throw new Error(`Date range is too large (max ${MAX_REPORT_DAYS} days). Please narrow it.`)
+  }
+  return { f, t }
+}
+
 // Returns approved shifts only — from/to are YYYY-MM-DD strings (inclusive)
 export async function getReport({ from, to }) {
-  const fromIso = new Date(from).toISOString()
-  const toIso = new Date(new Date(to).getTime() + 86400000).toISOString()
+  const { f, t } = validateDateRange(from, to)
+  const fromIso = f.toISOString()
+  const toIso = new Date(t.getTime() + 86400000).toISOString()
   const { data: shifts, error } = await supabase
     .from('shifts')
     .select('*')

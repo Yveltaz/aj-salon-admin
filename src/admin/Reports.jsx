@@ -16,6 +16,7 @@ export default function Reports() {
   const [from, setFrom] = useState(() => daysAgo(7))
   const [to, setTo] = useState(today)
   const [rows, setRows] = useState([])
+  const [rangeError, setRangeError] = useState('')
   const [busy, setBusy] = useState(false)
 
   // Xero state
@@ -35,7 +36,9 @@ export default function Reports() {
   }
 
   useEffect(() => {
-    getReport({ from, to }).then(setRows)
+    getReport({ from, to })
+      .then((r) => { setRows(r); setRangeError('') })
+      .catch((e) => { setRows([]); setRangeError(e.message) })
   }, [from, to])
 
   async function refreshXero() {
@@ -231,6 +234,7 @@ export default function Reports() {
             {busy ? 'Exporting…' : 'Export CSV (fallback)'}
           </button>
         </div>
+        {rangeError && <div className="admin-error" style={{ marginTop: 10 }}>{rangeError}</div>}
         <p className="muted" style={{ marginTop: 10, fontSize: '0.78rem' }}>Only approved shifts are exported for payroll.</p>
       </div>
 
