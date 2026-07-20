@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { supabase } from './api/supabase.js'
 import Login from './components/Login.jsx'
 import TwoFactorSetup from './components/TwoFactorSetup.jsx'
-import TwoFactorVerify, { deviceTrusted, clearTrustedDevice } from './components/TwoFactorVerify.jsx'
+import TwoFactorVerify from './components/TwoFactorVerify.jsx'
 import { Toast } from './components/ui.jsx'
 import AdminPortal from './admin/AdminPortal.jsx'
 import { getOwnerEmployee, logout as apiLogout } from './api/client.js'
@@ -14,8 +14,12 @@ import { getOwnerEmployee, logout as apiLogout } from './api/client.js'
 // refresh always lands on the right screen:
 //   no session                         -> login
 //   session, no verified factor        -> 2fa_enroll
-//   session, factor but AAL still aal1 -> 2fa_verify  (unless device trusted)
+//   session, factor but AAL still aal1 -> 2fa_verify
 //   session, elevated to aal2          -> portal
+//
+// There is no trusted-device shortcut: owner access is enforced at the data
+// layer (RLS requires aal2), so an aal1 session must always verify TOTP —
+// skipping it would only render a portal whose every query fails.
 async function resolveState() {
   const { data: { session } } = await supabase.auth.getSession()
   if (!session) return 'login'
@@ -24,7 +28,7 @@ async function resolveState() {
   // nextLevel is 'aal2' only when a verified factor exists.
   if (aal.nextLevel !== 'aal2') return '2fa_enroll'
   if (aal.currentLevel === 'aal2') return 'portal'
-  return deviceTrusted() ? 'portal' : '2fa_verify'
+  return '2fa_verify'
 }
 
 export default function App() {
@@ -76,7 +80,6 @@ export default function App() {
   }, [state])
 
   async function logout() {
-    clearTrustedDevice()
     await apiLogout()
     setOwner(null)
     setState('login')

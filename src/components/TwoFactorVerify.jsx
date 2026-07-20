@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { supabase } from '../api/supabase.js'
 import { Wordmark } from './ui.jsx'
 
-const TRUST_KEY = 'aj_admin_trusted_until'
-const THIRTY_DAYS = 30 * 86400000
-
 // 6-digit TOTP challenge shown after password login when a verified
-// authenticator exists but this session hasn't been elevated yet.
+// authenticator exists but this session hasn't been elevated yet. There is no
+// "remember this device" option: owner access is enforced at the data layer
+// (RLS requires an aal2 session), so a trusted-device shortcut could only skip
+// this UI, never the elevation — every session must reach aal2 to be useful.
 export default function TwoFactorVerify({ onVerified, onSignOut }) {
   const [factorId, setFactorId] = useState(null)
   const [code, setCode] = useState('')
-  const [remember, setRemember] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [loadErr, setLoadErr] = useState('')
@@ -40,9 +39,6 @@ export default function TwoFactorVerify({ onVerified, onSignOut }) {
         code: code.trim(),
       })
       if (error) throw error
-      if (remember) {
-        localStorage.setItem(TRUST_KEY, String(Date.now() + THIRTY_DAYS))
-      }
       onVerified()
     } catch (err) {
       setError('That code didn’t match. Check your authenticator app and try again.')
@@ -74,11 +70,6 @@ export default function TwoFactorVerify({ onVerified, onSignOut }) {
               autoFocus
             />
 
-            <label className="auth-remember">
-              <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
-              Remember this device for 30 days
-            </label>
-
             {error && <div className="admin-error" style={{ marginTop: 12 }}>{error}</div>}
 
             <button className="btn btn-dark" type="submit" disabled={busy || code.length !== 6 || !factorId} style={{ marginTop: 16 }}>
@@ -93,14 +84,4 @@ export default function TwoFactorVerify({ onVerified, onSignOut }) {
       </div>
     </div>
   )
-}
-
-// Whether this browser was marked trusted within the last 30 days.
-export function deviceTrusted() {
-  const t = Number(localStorage.getItem(TRUST_KEY) || 0)
-  return t > Date.now()
-}
-
-export function clearTrustedDevice() {
-  localStorage.removeItem(TRUST_KEY)
 }

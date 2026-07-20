@@ -908,14 +908,3 @@ select.admin-input { cursor: pointer; }
   font-variant-numeric: tabular-nums;
   padding-left: 0.5em;
 }
-
-.auth-remember {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 14px;
-  font-size: 0.85rem;
-  color: var(--ink-soft);
-  cursor: pointer;
-}
-.auth-remember input { width: 16px; height: 16px; accent-color: var(--gold); cursor: pointer; }
