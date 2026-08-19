@@ -23,7 +23,8 @@ export default function Dashboard() {
   const maxSvcs = Math.max(1, ...data.perLocationToday.map((l) => l.services))
 
   const stats = [
-    { n: data.clockedOnNow.length, k: 'Staff clocked on now' },
+    // `hero` is presentation only — the live floor count gets the dark card.
+    { n: data.clockedOnNow.length, k: 'Staff clocked on now', hero: true },
     { n: data.todayHours.toFixed(1), k: 'Total hours today' },
     { n: data.todayServices, k: 'Total services today' },
     { n: data.pendingApprovalCount, k: 'Shifts awaiting approval', warn: data.pendingApprovalCount > 0 },
@@ -37,8 +38,8 @@ export default function Dashboard() {
 
       <div className="admin-stat-grid">
         {stats.map((s) => (
-          <div className="card admin-stat" key={s.k}>
-            <div className="admin-stat-n" style={{ color: s.warn ? 'var(--warn)' : undefined }}>{s.n}</div>
+          <div className={'card admin-stat' + (s.hero ? ' admin-stat-hero' : '')} key={s.k}>
+            <div className="admin-stat-n" style={{ color: s.warn ? 'var(--warn-text)' : undefined }}>{s.n}</div>
             <div className="admin-stat-k">{s.k}</div>
           </div>
         ))}

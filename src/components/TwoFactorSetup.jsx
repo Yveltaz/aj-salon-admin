@@ -96,7 +96,7 @@ export default function TwoFactorSetup({ onEnrolled, onSignOut }) {
 
             {error && <div className="admin-error" style={{ marginTop: 12 }}>{error}</div>}
 
-            <button className="btn btn-dark" type="submit" disabled={busy || code.length !== 6} style={{ marginTop: 18 }}>
+            <button className="btn btn-gold" type="submit" disabled={busy || code.length !== 6} style={{ marginTop: 18 }}>
               {busy ? 'Verifying…' : 'Confirm & continue'}
             </button>
           </form>

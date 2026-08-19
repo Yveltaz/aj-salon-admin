@@ -106,10 +106,10 @@ export default function Leave({ employee, onPendingChange }) {
                 <td>
                   <span className={`status ${l.status}`}>{l.status}</span>
                   {l.status === 'rejected' && l.rejection_reason && (
-                    <div className="muted" style={{ fontSize: '0.74rem', marginTop: 4 }}>{l.rejection_reason}</div>
+                    <div className="muted" style={{ fontSize: 'var(--fs-caption)', marginTop: 5 }}>{l.rejection_reason}</div>
                   )}
                   {l.status !== 'pending' && l.actioned_at && (
-                    <div className="muted" style={{ fontSize: '0.72rem', marginTop: 4 }}>
+                    <div className="muted" style={{ fontSize: 'var(--fs-caption)', marginTop: 5 }}>
                       {fmtActioned(l.actioned_at)}{l.actioned_by_name ? ` · ${l.actioned_by_name}` : ''}
                     </div>
                   )}
@@ -117,11 +117,11 @@ export default function Leave({ employee, onPendingChange }) {
                 <td>
                   {l.status === 'pending' ? (
                     <div className="leave-actions">
-                      <button className="btn btn-gold" style={{ width: 'auto', padding: '6px 14px', background: 'var(--ok)', fontSize: '0.74rem' }} onClick={() => tryApprove(l)} disabled={busy}>Approve</button>
-                      <button className="btn btn-blush" style={{ width: 'auto', padding: '6px 14px', color: 'var(--warn)', fontSize: '0.74rem' }} onClick={() => { setRejectModal(l); setRejectReason(''); setError('') }}>Reject</button>
+                      <button className="btn btn-approve btn-sm" onClick={() => tryApprove(l)} disabled={busy}>Approve</button>
+                      <button className="btn btn-danger-line btn-sm" onClick={() => { setRejectModal(l); setRejectReason(''); setError('') }}>Reject</button>
                     </div>
                   ) : (
-                    <span className="muted" style={{ fontSize: '0.78rem' }}>—</span>
+                    <span className="muted">—</span>
                   )}
                 </td>
               </tr>
@@ -135,12 +135,12 @@ export default function Leave({ employee, onPendingChange }) {
           <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
             <div className="eyebrow">Reject leave</div>
             <h2 className="admin-modal-title">{rejectModal.employee?.name} — {fmtRange(rejectModal.from, rejectModal.to)}</h2>
-            <label className="admin-label">Reason <span style={{ color: 'var(--warn)' }}>*</span></label>
+            <label className="admin-label">Reason <span className="admin-req">*</span></label>
             <textarea className="admin-input" rows={3} value={rejectReason} onChange={(e) => { setRejectReason(e.target.value); setError('') }} placeholder="Required — visible to employee" />
             {error && <div className="admin-error">{error}</div>}
             <div className="admin-modal-actions">
               <button className="btn btn-line" style={{ width: 'auto' }} onClick={() => setRejectModal(null)}>Cancel</button>
-              <button className="btn btn-gold" style={{ width: 'auto', background: 'var(--warn)' }} onClick={doReject} disabled={busy}>Reject</button>
+              <button className="btn btn-danger" style={{ width: 'auto' }} onClick={doReject} disabled={busy}>Reject</button>
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@ export default function Leave({ employee, onPendingChange }) {
             </p>
             <div className="admin-modal-actions">
               <button className="btn btn-line" style={{ width: 'auto' }} onClick={() => setOverlapModal(null)}>Cancel</button>
-              <button className="btn btn-gold" style={{ width: 'auto' }} onClick={() => doApprove(overlapModal.leave)} disabled={busy}>Approve anyway</button>
+              <button className="btn btn-approve" style={{ width: 'auto' }} onClick={() => doApprove(overlapModal.leave)} disabled={busy}>Approve anyway</button>
             </div>
           </div>
         </div>

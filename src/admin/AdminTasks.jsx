@@ -60,21 +60,22 @@ export default function AdminTasks() {
       </div>
 
       <div className="card" style={{ padding: 0 }}>
-        {tasks.length === 0 && <p className="muted" style={{ padding: 18 }}>No tasks yet.</p>}
-        {tasks.map((t, i) => (
-          <div key={t.task_id} style={{ display: 'flex', gap: 12, alignItems: 'center', padding: '13px 16px', borderBottom: i < tasks.length - 1 ? '1px solid #f0e8df' : 'none' }}>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 500 }}>
+        {tasks.length === 0 && <p className="muted admin-list-empty">No tasks yet.</p>}
+        {tasks.map((t) => (
+          <div key={t.task_id} className="admin-list-row">
+            <div className="admin-list-main">
+              <div className="admin-list-title">
                 {t.title}
                 {t.recurring && <span className="chip">{t.recurring}</span>}
-                {t.priority === 'high' && <span className="chip" style={{ background: '#faeaea', color: 'var(--warn)' }}>high</span>}
+                {t.priority === 'high' && <span className="status rejected" style={{ marginLeft: 6 }}>high</span>}
               </div>
-              {t.description && <div className="muted" style={{ fontSize: '0.82rem' }}>{t.description}</div>}
-              <div className="muted" style={{ fontSize: '0.75rem', marginTop: 2 }}>
-                Due {fmtTime(t.due_at)} · {locName(t.location_id)} · <span style={{ color: t.status === 'completed' ? 'var(--ok)' : 'inherit' }}>{t.status}</span>
+              {t.description && <div className="admin-list-sub">{t.description}</div>}
+              <div className="admin-list-sub">
+                Due {fmtTime(t.due_at)} · {locName(t.location_id)} ·{' '}
+                <span style={{ color: t.status === 'completed' ? 'var(--ok-text)' : 'inherit' }}>{t.status}</span>
               </div>
             </div>
-            <button className="btn btn-blush" style={{ width: 'auto', padding: '6px 14px', color: 'var(--warn)', fontSize: '0.8rem', flexShrink: 0 }} onClick={() => setConfirmDelete(t.task_id)}>Delete</button>
+            <button className="btn btn-danger-line btn-sm" style={{ width: 'auto' }} onClick={() => setConfirmDelete(t.task_id)}>Delete</button>
           </div>
         ))}
       </div>
@@ -86,7 +87,7 @@ export default function AdminTasks() {
             <p className="muted" style={{ marginBottom: 20 }}>This cannot be undone.</p>
             <div className="admin-modal-actions">
               <button className="btn btn-line" style={{ width: 'auto' }} onClick={() => setConfirmDelete(null)}>Cancel</button>
-              <button className="btn btn-gold" style={{ width: 'auto', background: 'var(--warn)' }} onClick={() => handleDelete(confirmDelete)}>Delete</button>
+              <button className="btn btn-danger" style={{ width: 'auto' }} onClick={() => handleDelete(confirmDelete)}>Delete</button>
             </div>
           </div>
         </div>

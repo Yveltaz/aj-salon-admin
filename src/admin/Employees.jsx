@@ -110,11 +110,11 @@ export default function Employees() {
       </div>
 
       <div className="card" style={{ padding: 0 }}>
-        {employees.map((emp, i) => (
-          <div key={emp.employee_id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderBottom: i < employees.length - 1 ? '1px solid #f0e8df' : 'none' }}>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 500 }}>{emp.name}</div>
-              <div className="muted" style={{ fontSize: '0.8rem' }}>{emp.role}</div>
+        {employees.map((emp) => (
+          <div key={emp.employee_id} className="admin-list-row">
+            <div className="admin-list-main">
+              <div className="admin-list-title">{emp.name}</div>
+              <div className="admin-list-sub">{emp.role}</div>
             </div>
             {emp.role === 'owner' ? (
               <span className="status approved">owner</span>
@@ -148,18 +148,18 @@ export default function Employees() {
         {showRemoved && (
           <div className="card" style={{ padding: 0, marginTop: 10 }}>
             {removed.length === 0 && (
-              <p className="muted" style={{ padding: 16 }}>No removed staff.</p>
+              <p className="muted admin-list-empty">No removed staff.</p>
             )}
-            {removed.map((emp, i) => (
-              <div key={emp.employee_id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderBottom: i < removed.length - 1 ? '1px solid #f0e8df' : 'none' }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 500 }}>
+            {removed.map((emp) => (
+              <div key={emp.employee_id} className="admin-list-row">
+                <div className="admin-list-main">
+                  <div className="admin-list-title">
                     {emp.name}
                     {emp.original_name && (
                       <span className="muted" style={{ fontWeight: 400 }}> · was {emp.original_name}</span>
                     )}
                   </div>
-                  <div className="muted" style={{ fontSize: '0.8rem' }}>
+                  <div className="admin-list-sub">
                     Removed {emp.removed_at ? new Date(emp.removed_at).toLocaleDateString() : '—'}
                     {emp.reason ? ` · ${emp.reason}` : ''}
                   </div>
@@ -204,8 +204,8 @@ export default function Employees() {
             <div className="admin-modal-actions">
               <button className="btn btn-line" style={{ width: 'auto' }} onClick={() => setRemoveTarget(null)} disabled={removing}>Cancel</button>
               <button
-                className="btn btn-gold"
-                style={{ width: 'auto', background: 'var(--warn)' }}
+                className="btn btn-danger"
+                style={{ width: 'auto' }}
                 onClick={confirmRemove}
                 disabled={removing || confirmText !== 'REMOVE'}
               >

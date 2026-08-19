@@ -82,7 +82,7 @@ export default function Login({ onAuthed }) {
         {error && <div className="admin-error" style={{ marginTop: 12 }}>{error}</div>}
         {notice && <div className="auth-notice" style={{ marginTop: 12 }}>{notice}</div>}
 
-        <button className="btn btn-dark" type="submit" disabled={busy || !email || !password} style={{ marginTop: 20 }}>
+        <button className="btn btn-gold" type="submit" disabled={busy || !email || !password} style={{ marginTop: 20 }}>
           {busy ? 'Signing in…' : 'Sign in'}
         </button>
 

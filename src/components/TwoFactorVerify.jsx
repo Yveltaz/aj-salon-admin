@@ -72,7 +72,7 @@ export default function TwoFactorVerify({ onVerified, onSignOut }) {
 
             {error && <div className="admin-error" style={{ marginTop: 12 }}>{error}</div>}
 
-            <button className="btn btn-dark" type="submit" disabled={busy || code.length !== 6 || !factorId} style={{ marginTop: 16 }}>
+            <button className="btn btn-gold" type="submit" disabled={busy || code.length !== 6 || !factorId} style={{ marginTop: 16 }}>
               {busy ? 'Verifying…' : 'Verify'}
             </button>
           </form>

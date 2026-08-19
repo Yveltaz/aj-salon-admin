@@ -147,7 +147,7 @@ export default function Reports() {
                 Push to Xero
               </button>
             </div>
-            <p className="muted" style={{ marginTop: 10, fontSize: '0.78rem' }}>
+            <p className="muted" style={{ marginTop: 10, fontSize: 'var(--fs-caption)' }}>
               Pushes the {from} → {to} period selected below. {preview.length === 0 && 'No approved hours in this range yet.'}
             </p>
           </div>
@@ -176,14 +176,14 @@ export default function Reports() {
             ) : (
               <>
                 {pushResult.pushed?.length > 0 && (
-                  <div style={{ color: 'var(--ok)', fontSize: '0.85rem' }}>
+                  <div style={{ color: 'var(--ok-text)', fontSize: 'var(--fs-meta)' }}>
                     Pushed: {pushResult.pushed.join(', ')}
                   </div>
                 )}
                 {pushResult.skipped?.length > 0 && (
                   <div style={{ marginTop: 6 }}>
                     {pushResult.skipped.map((s, i) => (
-                      <div key={i} className="muted" style={{ fontSize: '0.82rem' }}>
+                      <div key={i} className="muted">
                         {s.name} — {s.reason}
                       </div>
                     ))}
@@ -224,10 +224,10 @@ export default function Reports() {
       {/* ---- Date range + CSV (existing) ---- */}
       <div className="card" style={{ marginBottom: 20 }}>
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.88rem' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--fs-meta)' }}>
             From <input className="admin-input" style={{ width: 'auto', display: 'inline' }} type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
           </label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.88rem' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--fs-meta)' }}>
             To <input className="admin-input" style={{ width: 'auto', display: 'inline' }} type="date" value={to} onChange={(e) => setTo(e.target.value)} />
           </label>
           <button className="btn btn-line" style={{ width: 'auto', padding: '9px 22px' }} onClick={handleExport} disabled={busy || rows.length === 0}>
@@ -235,7 +235,7 @@ export default function Reports() {
           </button>
         </div>
         {rangeError && <div className="admin-error" style={{ marginTop: 10 }}>{rangeError}</div>}
-        <p className="muted" style={{ marginTop: 10, fontSize: '0.78rem' }}>Only approved shifts are exported for payroll.</p>
+        <p className="muted" style={{ marginTop: 10, fontSize: 'var(--fs-caption)' }}>Only approved shifts are exported for payroll.</p>
       </div>
 
       <div style={{ overflowX: 'auto' }}>
@@ -286,7 +286,7 @@ export default function Reports() {
               This will create <b>draft</b> timesheets in Xero for review. Nothing is paid
               automatically — you'll still process payroll in Xero as normal.
             </p>
-            <div style={{ fontSize: '0.82rem', marginBottom: 8 }}>Period: <b>{from}</b> → <b>{to}</b></div>
+            <div style={{ fontSize: 'var(--fs-meta)', marginBottom: 8 }}>Period: <b>{from}</b> → <b>{to}</b></div>
             <table className="admin-table admin-table-full">
               <thead><tr><th>Employee</th><th>Approved hours</th></tr></thead>
               <tbody>

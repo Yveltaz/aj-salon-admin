@@ -197,7 +197,7 @@ export default function Roster() {
               {LOCATIONS.map((l) => <option key={l.location_id} value={l.location_id}>{l.name}</option>)}
             </select>
 
-            <div className="leave-dates" style={{ marginTop: 4 }}>
+            <div className="field-pair" style={{ marginTop: 4 }}>
               <div>
                 <label className="admin-label">Start</label>
                 <input className="admin-input" type="time" value={editor.start_time} onChange={(e) => field('start_time', e.target.value)} />
@@ -215,7 +215,7 @@ export default function Roster() {
 
             <div className="admin-modal-actions">
               {editor.roster_id && (
-                <button className="btn btn-blush" style={{ width: 'auto', color: 'var(--warn)', marginRight: 'auto' }} onClick={del} disabled={busy}>Delete</button>
+                <button className="btn btn-danger-line" style={{ width: 'auto', marginRight: 'auto' }} onClick={del} disabled={busy}>Delete</button>
               )}
               <button className="btn btn-line" style={{ width: 'auto' }} onClick={() => setEditor(null)}>Cancel</button>
               <button className="btn btn-gold" style={{ width: 'auto' }} onClick={save} disabled={busy || editorHasLeave}>Save</button>
@@ -244,7 +244,7 @@ export default function Roster() {
             <p className="muted">Staff will no longer see this week's roster.</p>
             <div className="admin-modal-actions">
               <button className="btn btn-line" style={{ width: 'auto' }} onClick={() => setConfirmUnpublish(false)}>Cancel</button>
-              <button className="btn btn-gold" style={{ width: 'auto', background: 'var(--warn)' }} onClick={doUnpublish} disabled={busy}>Unpublish</button>
+              <button className="btn btn-danger" style={{ width: 'auto' }} onClick={doUnpublish} disabled={busy}>Unpublish</button>
             </div>
           </div>
         </div>

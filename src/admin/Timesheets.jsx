@@ -103,9 +103,9 @@ export default function Timesheets({ employee, onApprovalChange }) {
                 </div>
               )}
               <div className="admin-ts-actions">
-                <button className="btn btn-gold" style={{ width: 'auto', padding: '8px 22px' }} onClick={() => handleApprove(s)} disabled={busy}>Approve</button>
-                <button className="btn btn-line" style={{ width: 'auto', padding: '8px 18px' }} onClick={() => openEdit(s)}>Edit</button>
-                <button className="btn btn-blush" style={{ width: 'auto', padding: '8px 18px', color: 'var(--warn)' }} onClick={() => { setRejectModal(s); setRejectReason(''); setError('') }}>Reject</button>
+                <button className="btn btn-approve" onClick={() => handleApprove(s)} disabled={busy}>Approve</button>
+                <button className="btn btn-line" onClick={() => openEdit(s)}>Edit</button>
+                <button className="btn btn-danger-line" onClick={() => { setRejectModal(s); setRejectReason(''); setError('') }}>Reject</button>
               </div>
             </div>
           )
@@ -117,12 +117,12 @@ export default function Timesheets({ employee, onApprovalChange }) {
           <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
             <div className="eyebrow">Reject shift</div>
             <h2 className="admin-modal-title">{rejectModal.employee?.name} — {fmtDate(rejectModal.clock_on_at)}</h2>
-            <label className="admin-label">Reason <span style={{ color: 'var(--warn)' }}>*</span></label>
+            <label className="admin-label">Reason <span className="admin-req">*</span></label>
             <textarea className="admin-input" rows={3} value={rejectReason} onChange={(e) => { setRejectReason(e.target.value); setError('') }} placeholder="Required — visible to employee" />
             {error && <div className="admin-error">{error}</div>}
             <div className="admin-modal-actions">
               <button className="btn btn-line" style={{ width: 'auto' }} onClick={() => setRejectModal(null)}>Cancel</button>
-              <button className="btn btn-gold" style={{ width: 'auto', background: 'var(--warn)' }} onClick={handleReject} disabled={busy}>Reject shift</button>
+              <button className="btn btn-danger" style={{ width: 'auto' }} onClick={handleReject} disabled={busy}>Reject shift</button>
             </div>
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function Timesheets({ employee, onApprovalChange }) {
               <div className="eyebrow" style={{ marginBottom: 6 }}>Clock events (read-only)</div>
               <div className="admin-events">
                 {editModal.events?.map((ev) => (
-                  <div key={ev.event_id} className="muted" style={{ fontSize: '0.8rem' }}>{ev.event_type.replace(/_/g, ' ')} — {fmtTime(ev.timestamp)}</div>
+                  <div key={ev.event_id} className="muted">{ev.event_type.replace(/_/g, ' ')} — {fmtTime(ev.timestamp)}</div>
                 ))}
               </div>
             </div>
@@ -156,10 +156,10 @@ export default function Timesheets({ employee, onApprovalChange }) {
 
             <div className="admin-before-after" style={{ marginTop: 10 }}>
               <div className="eyebrow" style={{ marginBottom: 4 }}>After (preview)</div>
-              <div style={{ color: 'var(--ok)' }}>{Number(editBreaks)} min break · {previewHours.toFixed(2)} h paid</div>
+              <div style={{ color: 'var(--ok-text)' }}>{Number(editBreaks)} min break · {previewHours.toFixed(2)} h paid</div>
             </div>
 
-            <label className="admin-label" style={{ marginTop: 10, display: 'block' }}>Reason <span style={{ color: 'var(--warn)' }}>*</span></label>
+            <label className="admin-label" style={{ marginTop: 10, display: 'block' }}>Reason <span className="admin-req">*</span></label>
             <textarea className="admin-input" rows={2} value={editReason} onChange={(e) => { setEditReason(e.target.value); setError('') }} placeholder="Required" />
             {error && <div className="admin-error">{error}</div>}
 
